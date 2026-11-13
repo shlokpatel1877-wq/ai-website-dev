@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Website Developer</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts for modern clean typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">AI Website Developer</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#home" class="nav-item active">Home</a>
+      <a href="#about" class="nav-item" id="aboutBtn">About</a>
+    </nav>
+  </header>
+
+  <!-- Main Hero / Input Section -->
+  <main class="container" id="home">
+    <section class="hero-section">
+      <h1 class="main-heading">Build Websites with AI</h1>
+      <p class="subtitle">Describe your idea. Let AI build your website.</p>
+
+      <!-- Prompt Input Box -->
+      <div class="input-card">
+        <label for="promptInput" class="input-label">What kind of website do you want to build?</label>
+        <textarea 
+          id="promptInput" 
+          rows="4" 
+          placeholder="e.g. Create a modern restaurant website with a hero banner, food menu cards, and a table reservation form..."
+        ></textarea>
+
+        <!-- Example Prompts -->
+        <div class="example-prompts">
+          <span class="examples-label">Try an example:</span>
+          <button class="chip" data-prompt="Create a modern portfolio website for a web developer with an About section, Projects showcase, and Contact form.">💼 Portfolio website</button>
+          <button class="chip" data-prompt="Create a restaurant website for an Italian bistro with a hero section, popular dishes menu, and reservation form.">🍕 Restaurant website</button>
+          <button class="chip" data-prompt="Create a college website with a clean header, courses offered, campus highlights, and admission inquiry form.">🎓 College website</button>
+          <button class="chip" data-prompt="Create a high-converting landing page for a SaaS productivity app with features, pricing cards, and call to action.">🚀 Landing page</button>
+        </div>
+
+        <!-- Generate Button & Status -->
+        <div class="action-row">
+          <button id="generateBtn" class="btn btn-primary">
+            <span class="btn-text">Generate Website</span>
+            <span class="btn-spinner hidden"></span>
+          </button>
+          <span id="statusMessage" class="status-msg"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Output Section (Hidden by default until generated) -->
+    <section id="outputSection" class="output-section hidden">
+      <div class="output-header">
+        <!-- View Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="preview">👁️ Live Preview</button>
+          <button class="tab-btn" data-tab="html">HTML</button>
+          <button class="tab-btn" data-tab="css">CSS</button>
+          <button class="tab-btn" data-tab="js">JavaScript</button>
+        </div>
+
+        <!-- Output Action Buttons -->
+        <div class="output-actions">
+          <button id="copyBtn" class="btn btn-outline" title="Copy code">📋 Copy Code</button>
+          <button id="regenerateBtn" class="btn btn-secondary" title="Regenerate with current prompt">🔄 Regenerate</button>
+        </div>
+      </div>
+
+      <!-- Preview Tab Content -->
+      <div id="previewTab" class="tab-content active">
+        <div class="iframe-wrapper">
+          <!-- Sandboxed iframe for safe execution -->
+          <iframe id="previewFrame" sandbox="allow-scripts" title="Generated Website Preview"></iframe>
+        </div>
+      </div>
+
+      <!-- HTML Code Tab Content -->
+      <div id="htmlTab" class="tab-content">
+        <pre><code id="htmlCode"></code></pre>
+      </div>
+
+      <!-- CSS Code Tab Content -->
+      <div id="cssTab" class="tab-content">
+        <pre><code id="cssCode"></code></pre>
+      </div>
+
+      <!-- JS Code Tab Content -->
+      <div id="jsTab" class="tab-content">
+        <pre><code id="jsCode"></code></pre>
+      </div>
+    </section>
+  </main>
+
+  <!-- About Modal -->
+  <div id="aboutModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>About AI Website Developer</h2>
+        <button id="closeModalBtn" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>This project allows anyone to generate complete, responsive websites simply by describing them in plain English.</p>
+        <ul>
+          <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+          <li><strong>Backend:</strong> Node.js &amp; Express.js</li>
+          <li><strong>AI Engine:</strong> Google Gemini API</li>
+          <li><strong>Security:</strong> Sandboxed iframe for safe live rendering</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
