@@ -7,6 +7,16 @@ const { GoogleGenAI } = require('@google/genai');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+function extractJson(text) {
+  let t = (text || '').trim();
+  t = t.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+  const start = t.indexOf('{');
+  const end = t.lastIndexOf('}');
+  if (start === -1 || end === -1 || end <= start) {
+    throw new Error('No JSON object found');
+  }
+  return JSON.parse(t.slice(start, end + 1));
+}
 
 // Supported Gemini flash models (with automatic fallback)
 const CANDIDATE_MODELS = [
@@ -87,28 +97,25 @@ Important Instructions:
       }
     }
 
-    if (!response || !response.text) {
+     if (!response || !response.text) {
       throw lastError || new Error('All Gemini models were unavailable. Please try again.');
     }
 
-    let rawText = response.text.trim();
-
-    // Remove any accidental markdown backticks (e.g. ```json ... ```)
-    if (rawText.startsWith('```')) {
-      rawText = rawText.replace(/^```(?:json)?\n?/, '').replace(/```$/, '').trim();
-    }
-
     // 6. Parse JSON result
+    const rawText = response.text;
+
     let generatedWebsite;
     try {
-      generatedWebsite = JSON.parse(rawText);
+      generatedWebsite = extractJson(rawText);
     } catch (parseError) {
-      console.error('Failed to parse Gemini output as JSON:', rawText);
+      console.error('Failed to parse Gemini output as JSON.');
+      console.error('Reason:', parseError.message);
+      console.error('Raw length:', rawText.length);
+      console.error('Raw output:', rawText);
       return res.status(500).json({
         error: 'AI generated code in an unexpected format. Please click Regenerate.'
       });
     }
-
     // 7. Send the generated code back to frontend
     res.json({
       html: generatedWebsite.html || '',
